@@ -120,20 +120,18 @@ public class ShareActivity extends AppCompatActivity {
                         userEmailFromFB.add(userEmail);
                         userImageFromFB.add(downloadUrl);
 
-
-
                     }
                     feedRecyclerAdapter.notifyDataSetChanged();
 
                     Toast.makeText(ShareActivity.this, ""+userImageFromFB.size() , Toast.LENGTH_SHORT).show();
 
-                }
+        }
 
-            }
+        }
         });
 
 
-    }
+        }
 
 
-}
+        }
