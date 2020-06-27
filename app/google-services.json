@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "891661845230",
+    "firebase_url": "https://benimservisimnerede.firebaseio.com",
+    "project_id": "benimservisimnerede",
+    "storage_bucket": "benimservisimnerede.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891661845230:android:0236939be09c1e6124e9ff",
+        "android_client_info": {
+          "package_name": "com.nisaelek.servisimnerede"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891661845230-7lo03f9jf8s0r8663j71ge4s40okaj8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKoFALFhKv1lVvnXXoVri_AkJEu13PjGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891661845230-7lo03f9jf8s0r8663j71ge4s40okaj8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
