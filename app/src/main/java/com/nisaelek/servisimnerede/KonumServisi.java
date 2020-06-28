@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -50,7 +51,8 @@ public class KonumServisi extends Service {
     public void onCreate() {
         super.onCreate();
         mAuth=FirebaseAuth.getInstance();
-        konumDatabase= FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child("Konumlar");
+        FirebaseUser user = mAuth.getCurrentUser();
+        konumDatabase= FirebaseDatabase.getInstance().getReference("Konumlar");
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override

@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(takipEdilen, 10));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //afra sana cok teşekk
+
 
         mMap.setMyLocationEnabled(true);
 

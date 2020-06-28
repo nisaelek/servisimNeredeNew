@@ -249,9 +249,9 @@ public class ProfileActivity extends AppCompatActivity {
                         .show();
             }
 
-            if (TextUtils.isEmpty(kullaniciadi.getText())) {
-                tilKullaniciAdi.setError("Lütfen kullanıcı adınızı giriniz.");
-            }
+         //   if (TextUtils.isEmpty(kullaniciadi.getText())) {
+              //  tilKullaniciAdi.setError("Lütfen kullanıcı adınızı giriniz.");
+          //  }
 
             return;
         }

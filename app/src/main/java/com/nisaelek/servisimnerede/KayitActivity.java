@@ -366,7 +366,7 @@ public class KayitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kayit);
-        databaseReference = FirebaseDatabase.getInstance().getReference("");
+        databaseReference = FirebaseDatabase.getInstance().getReference("kullanıcı1");
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.upEmail);
         password = findViewById(R.id.upPassword);
@@ -408,15 +408,14 @@ public class KayitActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                final String userDisplay = userType + new Date().getTime();
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userDisplay).build();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + user.getEmail()).build();
                                 user.updateProfile(profileUpdates);
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        DatabaseReference newReference = databaseReference.child(userType +new Date().toString());
+                                        DatabaseReference newReference = databaseReference.child(userType+new Date().toString());
                                         newReference.child("kullanici_eposta").setValue(email.getText().toString());
-                                        newReference.child("kullanici_adi").setValue(userDisplay);
+                                        newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
                                         int selectedId = radioButtonGroup.getCheckedRadioButtonId();
                                         newReference.child("kullanici_role").setValue(selectedId);
 
