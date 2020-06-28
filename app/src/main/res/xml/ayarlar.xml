@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
-        android:background="@color/white"
-        android:key="konumSwitch"
-        android:onClick="haritaGoster"
-        android:shadowColor="#FFFFFF"
-        android:summary="5 dakikada bir konum bilginiz kaydedilecek"
-        android:textColor="@color/colorAccent"
-        android:textColorHighlight="#FFF8F8"
-        android:textColorHint="#E91E63"
-        android:title="Konum bilgisi gönder" />
+<SwitchPreference
+    android:background="@color/white"
+    android:key="konumSwitch"
+    android:onClick="haritaGoster"
+    android:shadowColor="#FFFFFF"
+    android:summary="5 dakikada bir konum bilginiz kaydedilecek"
+    android:textColor="@color/white"
+    android:textColorHighlight="#FFF8F8"
+    android:textColorHint="#E91E63"
+    android:title="Konum bilgisi gönder" />
 </PreferenceScreen>
 

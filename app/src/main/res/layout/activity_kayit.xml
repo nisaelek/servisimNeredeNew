@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="@id/upPassword"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/upPassword"
-        app:layout_constraintTop_toBottomOf="@id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@id/radioUserRole" />
 
     <TextView
         android:id="@+id/txtKullaniciTipi"
@@ -56,7 +56,7 @@
         tools:ignore="MissingConstraints" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/radioUserRole"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="50dp"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/upPassword">
 
         <RadioButton
-            android:id="@+id/radioButtonOgr"
+            android:id="@+id/ogrenci"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -76,7 +76,7 @@
             android:textColorLink="#18BC9C" />
 
         <RadioButton
-            android:id="@+id/radioVeli"
+            android:id="@+id/veli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -84,7 +84,7 @@
             android:text="Veli" />
 
         <RadioButton
-            android:id="@+id/radioSofor"
+            android:id="@+id/sofor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"

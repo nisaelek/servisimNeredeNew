@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class KonumServisi extends Service {
     //Servis Hizmetleri
@@ -49,7 +50,7 @@ public class KonumServisi extends Service {
     public void onCreate() {
         super.onCreate();
         mAuth=FirebaseAuth.getInstance();
-        konumDatabase= FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getEmail()).child("Konumlar");
+        konumDatabase= FirebaseDatabase.getInstance().getReference("Konumlar");
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override

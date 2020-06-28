@@ -2,8 +2,11 @@ package com.nisaelek.servisimnerede;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.Date;
 
 /*
 import androidx.annotation.NonNull;
@@ -346,6 +354,13 @@ public class KayitActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     FirebaseUser currentUser;
+    DatabaseReference databaseReference;
+    private RadioGroup radioButtonGroup;
+    private FirebaseInstanceId mId;
+    private String userType;
+    private RadioButton vel1;
+    private RadioButton study;
+    private RadioButton drver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -355,8 +370,9 @@ public class KayitActivity extends AppCompatActivity {
         email = findViewById(R.id.upEmail);
         password = findViewById(R.id.upPassword);
         currentUser = mAuth.getCurrentUser();
-
+        radioButtonGroup=(RadioGroup) findViewById(R.id.radioUserRole);
     }
+
     public void btnSignup(View view){
 
         if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
@@ -390,7 +406,65 @@ public class KayitActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(),GirisActivity.class));
     }
 
-}
+
+    public void kayitOl(View view) {
+        if (!validateForm()) {
+            return;
+        }
+
+        vel1 = findViewById(R.id.veli);
+        study = findViewById(R.id.ogrenci);
+        drver = findViewById(R.id.sofor);
+        userType = "";
+
+        if (vel1.isChecked()) {
+            userType = "veli_";
+        } else if (study.isChecked()) {
+            userType = "ogrenci_";
+        } else if (drver.isChecked()) {
+            userType = "sofor_";
+        }
+
+        if (userType.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Lütfen Kullanıcı Rolü Seçınız !!", Toast.LENGTH_LONG).show();
+        } else {
+
+
+            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + new Date().getTime()).build();
+                                assert user != null;
+                                user.updateProfile(profileUpdates);
+                                DatabaseReference newReference = databaseReference.child(task.getResult().getUser().getUid());
+                                newReference.child("kullanici_eposta").setValue(email.getText().toString());
+                                newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
+                                int selectedId = radioButtonGroup.getCheckedRadioButtonId();
+                                newReference.child("kullanici_role").setValue(selectedId);
+
+                                // Sign in success, update UI with the signed-in user's information
+                                Toast.makeText(KayitActivity.this, "Kayıt başarılı",
+                                        Toast.LENGTH_SHORT).show();
+                                //   Intent intent=new Intent(KayitActivity.this,GirisActivity.class);
+                                //    startActivity(intent);
+                                startActivity(new Intent(KayitActivity.this, GirisActivity.class));
+                                finish();
+                                //return;
+
+
+                            } else {
+                                Toast.makeText(KayitActivity.this,
+                                        "Authentication failed. " + task.getException(),
+                                        Toast.LENGTH_SHORT).show();
+                                Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                            }
+                        }
+                    });
 
 
     /*
@@ -412,3 +486,10 @@ public class KayitActivity extends AppCompatActivity {
              }
      */
 
+        }}
+
+    private boolean validateForm() {
+        email.setError(null);
+        return false;
+    }
+}

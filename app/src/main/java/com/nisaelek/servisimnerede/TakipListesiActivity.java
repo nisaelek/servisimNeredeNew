@@ -53,6 +53,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.ktx.Firebase;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -122,9 +123,9 @@ public class TakipListesiActivity extends AppCompatActivity{
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Kullanicilar");
-        takipDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Takiplesenler");
-        konumlarDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Konumlar");
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
+        takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
+        konumlarDatabase = FirebaseDatabase.getInstance().getReference("Konumlar") .child(user.getUid());
 
         /*ref.child("id").child("Konumlar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
