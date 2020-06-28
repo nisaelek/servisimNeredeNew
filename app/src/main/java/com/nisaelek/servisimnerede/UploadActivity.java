@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,21 +18,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -47,7 +41,6 @@ public class UploadActivity extends AppCompatActivity {
     Uri imageData;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
 
 
     @Override
@@ -62,7 +55,7 @@ public class UploadActivity extends AppCompatActivity {
         storageReference = firebaseStorage.getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference("Posts");
+
 
     }
 
@@ -71,7 +64,6 @@ public class UploadActivity extends AppCompatActivity {
         if (imageData != null) {
 
 
-            //universal unique id  hangı hesabında bu proje ?? orda mısın  evet burdayım
             final UUID uuid = UUID.randomUUID();
             final String imageName = "images/" + uuid + ".jpg";
 
@@ -93,20 +85,21 @@ public class UploadActivity extends AppCompatActivity {
                             String userEmail = firebaseUser.getEmail();
 
                             String comment = commentText.getText().toString();
+                            Date date = new Date();
+                            System.out.println(date.toString());
 
                             if (!userEmail.isEmpty() && !downloadUrl.isEmpty() && !comment.isEmpty()){
                                 HashMap<String, Object> postData = new HashMap<>();
                                 postData.put("useremail", userEmail);
                                 postData.put("downloadurl", downloadUrl);
                                 postData.put("comment", comment);
-                                // -> postData.put("date", FieldValue.serverTimestamp());  Hata Bunda Yoksa Eklıyor şuan atıl hocanın kodları dhfj onun java kursu eskı hee tmm
-
+                                postData.put("date", date);
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("Posts").document(firebaseAuth.getCurrentUser().getEmail()).set(postData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Posts").document(""+uuid).set(postData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(UploadActivity.this, "Succes", Toast.LENGTH_SHORT).show();
-                                   startActivity(new Intent(getApplicationContext(),AnaActivity.class));
+                                        startActivity(new Intent(getApplicationContext(),AnaActivity.class));
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -169,26 +162,26 @@ public class UploadActivity extends AppCompatActivity {
 
             imageData = data.getData();
 
-                try {
+            try {
 
-                    if (Build.VERSION.SDK_INT >= 28) {
-                        ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), imageData);
-                        selectedImage = ImageDecoder.decodeBitmap(source);
-                        imageView.setImageBitmap(selectedImage);
-                    } else {
-                        selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageData);
-                        imageView.setImageBitmap(selectedImage);
-                    }//buralar ıyı upload tuşunda var bı sıkıntı olabilir
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (Build.VERSION.SDK_INT >= 28) {
+                    ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), imageData);
+                    selectedImage = ImageDecoder.decodeBitmap(source);
+                    imageView.setImageBitmap(selectedImage);
+                } else {
+                    selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageData);
+                    imageView.setImageBitmap(selectedImage);
+                }//buralar ıyı upload tuşunda var bı sıkıntı olabilir
 
 
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
 
-            super.onActivityResult(requestCode, resultCode, data);
         }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
+}
