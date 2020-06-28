@@ -157,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                   String kullaniciId= dataSnapshot.getValue().toString();
+               //    String kullaniciId= dataSnapshot.getValue().toString();
                 }
 
                 @Override

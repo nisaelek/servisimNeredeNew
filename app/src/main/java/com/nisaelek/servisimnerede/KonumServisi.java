@@ -49,8 +49,7 @@ public class KonumServisi extends Service {
     public void onCreate() {
         super.onCreate();
         mAuth=FirebaseAuth.getInstance();
-        konumDatabase= FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child("Konumlar");
-        //lokasyon servisini tanımladık
+        konumDatabase= FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getEmail()).child("Konumlar");
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override

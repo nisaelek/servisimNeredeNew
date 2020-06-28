@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,6 +31,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -53,7 +62,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TakipListesiActivity extends AppCompatActivity {
+public class TakipListesiActivity extends AppCompatActivity{
     public static final int alarm_kod = 1999;
     private BottomSheetBehavior bottomSheetBehavior;
     private DatabaseReference userDatabase, takipDatabase, konumlarDatabase;
@@ -72,11 +81,9 @@ public class TakipListesiActivity extends AppCompatActivity {
     }
 //izin Kontrolu
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode ==1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -84,6 +91,7 @@ public class TakipListesiActivity extends AppCompatActivity {
             }
 
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +122,9 @@ public class TakipListesiActivity extends AppCompatActivity {
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
-        takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
-        konumlarDatabase = FirebaseDatabase.getInstance().getReference().child("Konumlar");
+        userDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Kullanicilar");
+        takipDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Takiplesenler");
+        konumlarDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Konumlar");
 
         /*ref.child("id").child("Konumlar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -304,6 +312,10 @@ public class TakipListesiActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
     private class TakipListesiAdapter extends BaseAdapter {
 
         private final Context context;
@@ -466,6 +478,10 @@ public class TakipListesiActivity extends AppCompatActivity {
             return container;
 
         }
+    }
+
+    public void location(){
+
     }
     }
 
