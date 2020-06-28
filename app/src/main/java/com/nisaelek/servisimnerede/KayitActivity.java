@@ -366,7 +366,7 @@ public class KayitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kayit);
-        databaseReference = FirebaseDatabase.getInstance().getReference("kullanıcı1");
+        databaseReference = FirebaseDatabase.getInstance().getReference("");
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.upEmail);
         password = findViewById(R.id.upPassword);
@@ -413,7 +413,7 @@ public class KayitActivity extends AppCompatActivity {
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        DatabaseReference newReference = databaseReference.child(userType+new Date().toString());
+                                        DatabaseReference newReference = databaseReference.child(userType +new Date().toString());
                                         newReference.child("kullanici_eposta").setValue(email.getText().toString());
                                         newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
                                         int selectedId = radioButtonGroup.getCheckedRadioButtonId();

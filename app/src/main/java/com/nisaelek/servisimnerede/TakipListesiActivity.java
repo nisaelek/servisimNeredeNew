@@ -123,7 +123,7 @@ public class TakipListesiActivity extends AppCompatActivity{
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("kullanıcı1");
         takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
         konumlarDatabase = FirebaseDatabase.getInstance().getReference("Konumlar") .child(user.getUid());
 
