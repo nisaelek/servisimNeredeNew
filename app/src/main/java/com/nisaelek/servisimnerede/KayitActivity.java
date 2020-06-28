@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
@@ -365,7 +366,7 @@ public class KayitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kayit);
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("kullanıcı1");
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.upEmail);
         password = findViewById(R.id.upPassword);
@@ -375,34 +376,7 @@ public class KayitActivity extends AppCompatActivity {
 
     public void btnSignup(View view){
 
-        if (!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(
-                    this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType+new Date().getTime()).build();
-                                user.updateProfile(profileUpdates);
-                                startActivity(new Intent(getApplicationContext(), GirisActivity.class));
-                                if(mAuth.getCurrentUser() != null){
-                                    mAuth.getCurrentUser().sendEmailVerification();
-                                    Toast.makeText(getApplicationContext(),"Doğrulama E-Postası Gönderıldı",Toast.LENGTH_LONG).show();
-                                }else {
-                                    Toast.makeText(getApplicationContext(),"Tekrar Deneyın !",Toast.LENGTH_LONG).show();
-                                }
-                                mAuth.signOut(); // tamamdır şımdı
-                            } else {
-                                Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-            );
-
-
-        }else {
-            Toast.makeText(getApplicationContext(),"Email/Password Kontrol Ediniz",Toast.LENGTH_LONG).show();
-        }
+        kayitOl(view);
     }
     public void giris_Yap(View view){
         startActivity(new Intent(getApplicationContext(),GirisActivity.class));
@@ -410,9 +384,7 @@ public class KayitActivity extends AppCompatActivity {
 
 
     public void kayitOl(View view) {
-        if (!validateForm()) {
-            return;
-        }
+
 
         vel1 = findViewById(R.id.veli);
         study = findViewById(R.id.ogrenci);
@@ -430,33 +402,30 @@ public class KayitActivity extends AppCompatActivity {
         if (userType.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Lütfen Kullanıcı Rolü Seçınız !!", Toast.LENGTH_LONG).show();
         } else {
-
-
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             if (task.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + new Date().getTime()).build();
-                                assert user != null;
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + user.getEmail()).build();
                                 user.updateProfile(profileUpdates);
-                                DatabaseReference newReference = databaseReference.child(task.getResult().getUser().getUid());
-                                newReference.child("kullanici_eposta").setValue(email.getText().toString());
-                                newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
-                                int selectedId = radioButtonGroup.getCheckedRadioButtonId();
-                                newReference.child("kullanici_role").setValue(selectedId);
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        DatabaseReference newReference = databaseReference.child(userType+new Date().toString());
+                                        newReference.child("kullanici_eposta").setValue(email.getText().toString());
+                                        newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
+                                        int selectedId = radioButtonGroup.getCheckedRadioButtonId();
+                                        newReference.child("kullanici_role").setValue(selectedId);
 
-                                // Sign in success, update UI with the signed-in user's information
-                                Toast.makeText(KayitActivity.this, "Kayıt başarılı",
-                                        Toast.LENGTH_SHORT).show();
-                                //   Intent intent=new Intent(KayitActivity.this,GirisActivity.class);
-                                //    startActivity(intent);
-                                startActivity(new Intent(KayitActivity.this, GirisActivity.class));
-                                finish();
-                                //return;
+                                        Toast.makeText(KayitActivity.this, "Kayıt başarılı",
+                                                Toast.LENGTH_SHORT).show();
+
+                                        startActivity(new Intent(KayitActivity.this, GirisActivity.class));
+                                        finish();
+                                    }
+                                });
 
 
                             } else {
