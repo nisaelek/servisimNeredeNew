@@ -118,7 +118,7 @@ public class TakipListesiActivity extends AppCompatActivity {
         takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
         konumlarDatabase = FirebaseDatabase.getInstance().getReference().child("Konumlar");
 
-        /*ref.child("mostafa_farahat22@yahoo.com").child("_email").addListenerForSingleValueEvent(new ValueEventListener() {
+        /*ref.child("id").child("Konumlar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 // data available in snapshot.value()

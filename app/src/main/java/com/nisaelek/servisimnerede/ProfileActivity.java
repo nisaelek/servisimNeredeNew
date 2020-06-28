@@ -129,12 +129,12 @@ public class ProfileActivity extends AppCompatActivity {
         //initialize
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        tilEmail = findViewById(R.id.tilEmail);
+
         tilKullaniciAdi = findViewById(R.id.tilKullaniciAdi);
-        email = findViewById(R.id.email);
+
         kullaniciadi = findViewById(R.id.kullaniciadi);
-        tilSifre = findViewById(R.id.tilSifre);
-        sifre = findViewById(R.id.sifre);
+
+      
         progresBarCircle = findViewById(R.id.progresBarCircle);
         profilPhoto = findViewById(R.id.profile);
 
@@ -157,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                   String kullanici_id= dataSnapshot.getValue().toString();
+                   String kullaniciId= dataSnapshot.getValue().toString();
                 }
 
                 @Override
