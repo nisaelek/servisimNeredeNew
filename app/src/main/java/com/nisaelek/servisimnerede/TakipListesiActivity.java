@@ -122,9 +122,9 @@ public class TakipListesiActivity extends AppCompatActivity{
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
-        takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
-        konumlarDatabase = FirebaseDatabase.getInstance().getReference().child("Konumlar");
+        userDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Kullanicilar");
+        takipDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Takiplesenler");
+        konumlarDatabase = FirebaseDatabase.getInstance().getReference("sss").child("Konumlar");
 
         /*ref.child("id").child("Konumlar").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
