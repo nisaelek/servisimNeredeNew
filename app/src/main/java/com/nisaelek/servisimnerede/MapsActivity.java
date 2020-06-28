@@ -61,46 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        final String userEmail = mAuth.getCurrentUser().getEmail();
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng userLoc = new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(userLoc).title("your location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc,15));
-                Map<String,Object> data = new HashMap<>();
-                data.put("userLocation",userLoc);
-                data.put("userEmail",userEmail);
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("userlocation").document(userEmail).set(data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                   if (task.isSuccessful()){
-                       Toast.makeText(MapsActivity.this, "Konum Alındı", Toast.LENGTH_SHORT).show();
-                   }
-
-                    }
-                });
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
 
         //konumlarDatabase.child("")
         // Add a marker in Sydney and move the camera
