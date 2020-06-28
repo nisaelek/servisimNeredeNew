@@ -381,7 +381,9 @@ public class KayitActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType+new Date().getTime()).build();
+                                user.updateProfile(profileUpdates);
                                 startActivity(new Intent(getApplicationContext(), GirisActivity.class));
                                 if(mAuth.getCurrentUser() != null){
                                     mAuth.getCurrentUser().sendEmailVerification();
