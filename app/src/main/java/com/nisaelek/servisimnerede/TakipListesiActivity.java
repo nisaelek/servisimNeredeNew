@@ -388,14 +388,19 @@ public class TakipListesiActivity extends AppCompatActivity{
             });
 
             //Tarih, saat ve adres bilgisini set etme işlemi  //şımdı bakıyorum bkle az tmm
-            konumlarDatabase.child(takip.getTakipEdilen()).orderByValue().limitToLast(1)
-                    .addValueEventListener(
+
+
+            Query reference2 = konumlarDatabase.child(takip.getTakipEdilen()).orderByValue().limitToLast(1);
+            reference2.addValueEventListener(
                             new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     Log.d("Konumlar", dataSnapshot.toString());
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        System.out.println( snapshot.getValue());
+
                                         konum[0] = snapshot.getValue(Konum.class);
+                                        assert konum[0] != null;
                                         setKonumBilgisi(konum[0]);
                                     }
                                 }
@@ -481,8 +486,6 @@ public class TakipListesiActivity extends AppCompatActivity{
         }
     }
 
-    public void location(){
 
-    }
     }
 

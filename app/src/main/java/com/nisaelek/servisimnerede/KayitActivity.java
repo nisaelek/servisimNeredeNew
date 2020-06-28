@@ -408,14 +408,15 @@ public class KayitActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + user.getEmail()).build();
+                                final String userDisplay = userType + new Date().getTime();
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userDisplay).build();
                                 user.updateProfile(profileUpdates);
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         DatabaseReference newReference = databaseReference.child(userType +new Date().toString());
                                         newReference.child("kullanici_eposta").setValue(email.getText().toString());
-                                        newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
+                                        newReference.child("kullanici_adi").setValue(userDisplay);
                                         int selectedId = radioButtonGroup.getCheckedRadioButtonId();
                                         newReference.child("kullanici_role").setValue(selectedId);
 

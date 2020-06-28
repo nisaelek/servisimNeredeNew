@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         if (databaseReference != null) {
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Kullanicilar")
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("kullanıcı1")
                     .child(user.getUid());
         }
 
@@ -105,10 +105,14 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progresBarCircle.setVisibility(View.GONE);
 
-                String ad = dataSnapshot.child("kullanici_adi").getValue(String.class);
+                if (mAuth.getCurrentUser().getDisplayName() != null){
+                    String ad = mAuth.getCurrentUser().getDisplayName();
+                    kullaniciadi.setText(ad);
+                }
+
                 String url = dataSnapshot.child("profil_url").getValue(String.class);
 
-                kullaniciadi.setText(ad);
+
                 Picasso.get().load(url).into(profilPhoto);
             }
 
