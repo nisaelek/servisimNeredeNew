@@ -29,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.ktx.Firebase;
 import com.squareup.picasso.Picasso;
@@ -63,7 +65,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TakipListesiActivity extends AppCompatActivity{
+public class TakipListesiActivity extends AppCompatActivity {
     public static final int alarm_kod = 1999;
     private BottomSheetBehavior bottomSheetBehavior;
     private DatabaseReference userDatabase, takipDatabase, konumlarDatabase;
@@ -80,11 +82,12 @@ public class TakipListesiActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
     }
-//izin Kontrolu
+
+    //izin Kontrolu
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode ==1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -94,6 +97,7 @@ public class TakipListesiActivity extends AppCompatActivity{
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +105,7 @@ public class TakipListesiActivity extends AppCompatActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //hata verdi yorum satırı yaptım. bi ka
-      setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
 
         textInputLayout = findViewById(R.id.til);
@@ -123,7 +127,7 @@ public class TakipListesiActivity extends AppCompatActivity{
             return;
         }
 
-        userDatabase = FirebaseDatabase.getInstance().getReference().child("kullanıcı1");
+        userDatabase = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
         takipDatabase = FirebaseDatabase.getInstance().getReference().child("Takiplesenler");
         konumlarDatabase = FirebaseDatabase.getInstance().getReference("Konumlar").child(user.getUid());
 
@@ -238,7 +242,8 @@ public class TakipListesiActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-    public void AnaActivityGit(View view){
+
+    public void AnaActivityGit(View view) {
         startActivity(new Intent(TakipListesiActivity.this, AnaActivity.class));
     }
 
@@ -293,8 +298,11 @@ public class TakipListesiActivity extends AppCompatActivity{
 
 
     }
-   public void haritaGoster(View view){
-        Intent intent=new Intent(getApplicationContext(),MapsActivity.class);
+
+    public void haritaGoster(View view) {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        final String userId = view.getTag(R.string.userId).toString();
+        intent.putExtra("userId", userId.toString());
         startActivity(intent);
     }
 
@@ -312,10 +320,6 @@ public class TakipListesiActivity extends AppCompatActivity{
             }
         });
     }
-
-
-
-
 
 
     private class TakipListesiAdapter extends BaseAdapter {
@@ -353,11 +357,11 @@ public class TakipListesiActivity extends AppCompatActivity{
                 return null;
             }
 
-            LinearLayout container = (LinearLayout) ((Activity) context).getLayoutInflater().
+            final LinearLayout container = (LinearLayout) ((Activity) context).getLayoutInflater().
                     inflate(R.layout.takip_item, null);
 
             Takip takip = takipList.get(i);
-
+            final RelativeLayout lay = container.findViewById(R.id.card_userId);
             final TextView ad = container.findViewById(R.id.ad);
             final TextView zaman = container.findViewById(R.id.zaman);
             final TextView adresler = container.findViewById(R.id.adresler);
@@ -367,6 +371,7 @@ public class TakipListesiActivity extends AppCompatActivity{
             final Konum[] konum = new Konum[1];
             final String[] url = new String[1];
 
+
             //kullanıcı adı ve profil resmini set etme işlemi
             userDatabase.child(takip.getTakipEdilen()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -374,7 +379,8 @@ public class TakipListesiActivity extends AppCompatActivity{
                     if (dataSnapshot.exists()) {
                         String kullaniciadi = dataSnapshot.child("kullanici_adi").getValue(String.class);
                         url[0] = dataSnapshot.child("profil_url").getValue(String.class);
-
+                        String UserId = dataSnapshot.getKey();
+                        lay.setTag(R.string.userId, UserId);
                         ad.setText(kullaniciadi);
                         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
                         zaman.setText(currentDateTimeString);
@@ -393,43 +399,43 @@ public class TakipListesiActivity extends AppCompatActivity{
 
             Query reference2 = konumlarDatabase.child(takip.getTakipEdilen()).orderByValue().limitToLast(1);
             reference2.addValueEventListener(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    Log.d("Konumlar", dataSnapshot.toString());
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        System.out.println( snapshot.getValue());
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.d("Konumlar", dataSnapshot.toString());
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                System.out.println(snapshot.getValue());
 
-                                        konum[0] = snapshot.getValue(Konum.class);
-                                        assert konum[0] != null;
-                                        setKonumBilgisi(konum[0]);
+                                konum[0] = snapshot.getValue(Konum.class);
+                                assert konum[0] != null;
+                                setKonumBilgisi(konum[0]);
+                            }
+                        }
+
+                        private void setKonumBilgisi(Konum konum) {
+
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            Date date = new Date(konum.getZaman());
+                            zaman.setText(format.format(date));
+
+                            String adres = "";
+                            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+                            try {
+                                List<Address> addressList = geocoder
+                                        .getFromLocation(konum.getEnlem(), konum.getBoylam(), 1);
+                                for (Address adr : addressList) {
+                                    Log.d("Adres", "setKonumBilgisi: " + adr.toString());
+                                    adres += adr.getAddressLine(0);
+                                    for (int i = 0; i < adr.getMaxAddressLineIndex(); i++) {
+                                        //adres+=adr.getAddressLine(i)+" , ";
                                     }
                                 }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
-                                private void setKonumBilgisi(Konum konum) {
-
-                                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                                    Date date = new Date(konum.getZaman());
-                                    zaman.setText(format.format(date));
-
-                                    String adres = "";
-                                    Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-
-                                    try {
-                                        List<Address> addressList = geocoder
-                                                .getFromLocation(konum.getEnlem(), konum.getBoylam(), 1);
-                                        for (Address adr : addressList) {
-                                            Log.d("Adres", "setKonumBilgisi: " + adr.toString());
-                                            adres += adr.getAddressLine(0);
-                                            for (int i = 0; i < adr.getMaxAddressLineIndex(); i++) {
-                                                //adres+=adr.getAddressLine(i)+" , ";
-                                            }
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    adresler.setText(adres);
+                            adresler.setText(adres);
 
                 /*
                   //Uzaklık bilgisi hesaplama
@@ -457,13 +463,13 @@ public class TakipListesiActivity extends AppCompatActivity{
 
                  */
 
-                                }
+                        }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    //Hata
-                                }
-                            });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            //Hata
+                        }
+                    });
 
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -471,12 +477,11 @@ public class TakipListesiActivity extends AppCompatActivity{
                     //Mapsactivity açılacak
 
                     Intent intent = new Intent(context, MapsActivity.class);
-                    intent.putExtra("enlem",konum[0].getEnlem());
-                    intent.putExtra("boylam",konum[0].getBoylam());
-                    intent.putExtra("profil_url",url[0]);
-                    intent.putExtra("kullanici_adi",ad.getText().toString());
+                    intent.putExtra("enlem", konum[0].getEnlem());
+                    intent.putExtra("boylam", konum[0].getBoylam());
+                    intent.putExtra("profil_url", url[0]);
+                    intent.putExtra("kullanici_adi", ad.getText().toString());
                     context.startActivity(intent);
-
 
 
                 }
@@ -488,5 +493,5 @@ public class TakipListesiActivity extends AppCompatActivity{
     }
 
 
-    }
+}
 

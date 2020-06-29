@@ -32,7 +32,7 @@ public class AnaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ana);
     }
-
+// Tum butonlara onclick verdik ve diğer actv ye atadık
     public void takiplgit(View view) {
         Intent intent = new Intent(AnaActivity.this, TakipListesiActivity.class);
         startActivity(intent);

@@ -90,8 +90,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         if (databaseReference != null) {
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("kullanıcı1")
-                    .child(user.getUid());
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Kullanicilar")
+                    .child(user.getUid()); //bak burda kullanıcılar içerisinde dediğimi yapnuşsın
         }
 
 
@@ -105,15 +105,17 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progresBarCircle.setVisibility(View.GONE);
 
-                if (mAuth.getCurrentUser().getDisplayName() != null){
-                    String ad = mAuth.getCurrentUser().getDisplayName();
+                if (mAuth.getCurrentUser() != null){
+                    String ad = dataSnapshot.child("kullanici_adi").getValue(String.class);
                     kullaniciadi.setText(ad);
+                    String url = dataSnapshot.child("profil_url").getValue(String.class);
+
+
+                    Picasso.get().load(url).into(profilPhoto);
+
                 }
 
-                String url = dataSnapshot.child("profil_url").getValue(String.class);
 
-
-                Picasso.get().load(url).into(profilPhoto);
             }
 
             @Override
@@ -267,7 +269,7 @@ public class ProfileActivity extends AppCompatActivity {
         childRef.putFile(profilPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+//Burda Kullanıcılar altındaki Kullanici_Adini edittinputtexe yolladık.
                 Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 result.addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override

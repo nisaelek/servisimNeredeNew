@@ -39,6 +39,7 @@ public class KonumServisi extends Service {
     private LocationListener locationListener;
     private boolean lokasyonBilgisiAlindi = false;
     private FirebaseAuth mAuth;
+    FirebaseUser user;
     private DatabaseReference konumDatabase;
 
     @Nullable
@@ -49,10 +50,13 @@ public class KonumServisi extends Service {
 
     @Override
     public void onCreate() {
+        //Manifestte oluşturulan konum servisi ve konumun çalışması için gerekli olan servis
         super.onCreate();
         mAuth=FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
+        //Konumlar diye tabl oluşturuldu ve burda konum bilgileri tutulacak
         konumDatabase= FirebaseDatabase.getInstance().getReference("Konumlar");
+        //Konum Servisi Manegeri tanımlanıyor
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -85,13 +89,15 @@ public class KonumServisi extends Service {
     private void lokasyonBilgisiKaydet(double enlem, double boylam) {
 
         lokasyonBilgisiAlindi = true;
-
+//ilk olarak mapActivity yüklenirken intent içerisinde gelen kullanıcının id si ile konumlar tablosunda o kullanıcının bütün konularını çekiyorum
+//daha sonra herbir konumu yukarıda tanımladığım konumlar arrayinin içine atıyorum bütün konuları array içerisine attıktan sonra
+//konumlariharitayaEkle() methodunu çalıştırarak o konumları harita üzerinde işaretletiyorum
         Map<String,Object> map = new HashMap<>();
         map.put("enlem",enlem);
         map.put("boylam",boylam);
         map.put("zaman",System.currentTimeMillis());
 
-        konumDatabase.push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+        konumDatabase.child(user.getUid()).push().setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 alarmAyarla();

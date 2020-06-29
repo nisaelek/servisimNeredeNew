@@ -65,6 +65,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
             final UUID uuid = UUID.randomUUID();
+            //İmage namini tanımladık
             final String imageName = "images/" + uuid + ".jpg";
 
             storageReference.child(imageName).putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -72,8 +73,9 @@ public class UploadActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     //Download URL
-
+//imageName adlı bir tablo oluşturduk
                     StorageReference newReference = FirebaseStorage.getInstance().getReference(imageName);
+
                     newReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -81,15 +83,17 @@ public class UploadActivity extends AppCompatActivity {
                             String downloadUrl = uri.toString();
 
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+//assert test etmek için kullanılır ve onay
                             assert firebaseUser != null;
                             String userEmail = firebaseUser.getEmail();
-
+//Açıklama satırını tanımladık
                             String comment = commentText.getText().toString();
                             Date date = new Date();
                             System.out.println(date.toString());
 
                             if (!userEmail.isEmpty() && !downloadUrl.isEmpty() && !comment.isEmpty()){
                                 HashMap<String, Object> postData = new HashMap<>();
+                                //Hashmap oluşturduk ve boylelikle birden çok alt sutun oluşturduk
                                 postData.put("useremail", userEmail);
                                 postData.put("downloadurl", downloadUrl);
                                 postData.put("comment", comment);
@@ -129,7 +133,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public void selectImage(View view) {
-
+//İzinlerle alakalı
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         } else {
@@ -157,7 +161,7 @@ public class UploadActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+//Burda Bitmap e donuştururken sorun olabileceğinden apk kontrolu yaparak seçilen image i bitmape donuşturduk.
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
 
             imageData = data.getData();
@@ -171,7 +175,7 @@ public class UploadActivity extends AppCompatActivity {
                 } else {
                     selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageData);
                     imageView.setImageBitmap(selectedImage);
-                }//buralar ıyı upload tuşunda var bı sıkıntı olabilir
+                }
 
 
             } catch (IOException e) {

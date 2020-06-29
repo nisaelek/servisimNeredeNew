@@ -4,7 +4,7 @@ package com.nisaelek.servisimnerede;
 
     private Double enlem,boylam;
     private Long zaman;
-
+//Enlem boylam bilgileri tutuluyor
     public Konum() {
     }
 

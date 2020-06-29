@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
 import androidx.annotation.NonNull;
@@ -362,24 +364,26 @@ public class KayitActivity extends AppCompatActivity {
     private RadioButton vel1;
     private RadioButton study;
     private RadioButton drver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kayit);
-        databaseReference = FirebaseDatabase.getInstance().getReference("kullanıcı1");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Kullanicilar");
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.upEmail);
         password = findViewById(R.id.upPassword);
         currentUser = mAuth.getCurrentUser();
-        radioButtonGroup=(RadioGroup) findViewById(R.id.radioUserRole);
+        radioButtonGroup = (RadioGroup) findViewById(R.id.radioUserRole);
     }
 
-    public void btnSignup(View view){
+    public void btnSignup(View view) {
 
         kayitOl(view);
     }
-    public void giris_Yap(View view){
-        startActivity(new Intent(getApplicationContext(),GirisActivity.class));
+
+    public void giris_Yap(View view) {
+        startActivity(new Intent(getApplicationContext(), GirisActivity.class));
     }
 
 
@@ -407,19 +411,23 @@ public class KayitActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userType + user.getEmail()).build();
                                 user.updateProfile(profileUpdates);
+                                //Burda bu method sayesinde sendEMAİLvERİFİCATİON eMAİL doğrulama olayını yapıyor
                                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        DatabaseReference newReference = databaseReference.child(userType+new Date().toString());
-                                        newReference.child("kullanici_eposta").setValue(email.getText().toString());
-                                        newReference.child("kullanici_adi").setValue(userType + new Date().getTime());
-                                        int selectedId = radioButtonGroup.getCheckedRadioButtonId();
-                                        newReference.child("kullanici_role").setValue(selectedId);
 
-                                        Toast.makeText(KayitActivity.this, "Kayıt başarılı",
+
+                                        int selectedId = radioButtonGroup.getCheckedRadioButtonId();
+                                        Map<String, Object> map = new HashMap<>();
+                                        map.put("kullanici_eposta", email.getText().toString());
+                                        map.put("kullanici_adi", userType + new Date().getTime());
+                                        map.put("kullanici_role", selectedId);
+                                        databaseReference.child(user.getUid()).setValue(map);
+
+                                        Toast.makeText(KayitActivity.this, "Email Doğrulama  Maili Yollandı",
                                                 Toast.LENGTH_SHORT).show();
 
                                         startActivity(new Intent(KayitActivity.this, GirisActivity.class));
@@ -457,7 +465,8 @@ public class KayitActivity extends AppCompatActivity {
              }
      */
 
-        }}
+        }
+    }
 
     private boolean validateForm() {
         email.setError(null);

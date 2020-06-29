@@ -62,7 +62,7 @@ public class ShareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
-
+//Açıklamaları emailleri ve resimleri Array Listte tutuyoruz.
         userCommentFromFB = new ArrayList<>();
         userEmailFromFB = new ArrayList<>();
         userImageFromFB = new ArrayList<>();
@@ -72,13 +72,14 @@ public class ShareActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Bi adaptor oluşturuyoruz ArrayListte tuttuğumuz verileri bağlamak için
         feedRecyclerAdapter = new ShareRecyclerAdapter(userEmailFromFB,userCommentFromFB,userImageFromFB);
         recyclerView.setAdapter(feedRecyclerAdapter);
         getDataFromFirestore();
     }
 
     public void getDataFromFirestore() {
-
+//Burda Post adında tablo oluşturuyoruz ve içine diğer sutunları tanımlıyoruz.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Posts").orderBy("date", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
