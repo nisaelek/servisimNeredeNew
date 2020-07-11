@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/recyclerview_rowuseremail_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="useremail text"
+        android:paddingLeft="7dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"/>
+
+    <TextView
+        android:id="@+id/recyclerview_rowusername_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="username text"
+        android:paddingLeft="7dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"/>
+
+    <TextView
+        android:id="@+id/recyclerview_rowcomment_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="comment text"
+        android:paddingLeft="7dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"/>
+</LinearLayout>

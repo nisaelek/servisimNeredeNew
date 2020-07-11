@@ -47,7 +47,7 @@
         android:layout_marginEnd="55dp"
         android:layout_marginBottom="77dp"
         android:background="@drawable/ic_ogr_arama"
-        android:onClick="shareGit"
+        android:onClick="dilekGit"
         android:shadowColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView7"

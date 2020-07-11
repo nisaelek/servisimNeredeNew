@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -14,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.nisaelek.AramaActivity;
 
 import java.util.List;
 
@@ -53,11 +51,15 @@ public class AnaActivity extends AppCompatActivity {
         Intent intent = new Intent(AnaActivity.this, ShareActivity.class);
         startActivity(intent);
     }
+
     public void aramaGit(View view) {
         Intent intent = new Intent(AnaActivity.this, AramaActivity.class);
         startActivity(intent);
     }
-
+    public void dilekGit(View view) {
+        Intent intent = new Intent(AnaActivity.this, DilekActivity.class);
+        startActivity(intent);
+    }
 /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -1,4 +1,4 @@
-package com.nisaelek;
+package com.nisaelek.servisimnerede;
 
 import androidx.appcompat.app.AppCompatActivity;
 
