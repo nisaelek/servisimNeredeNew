@@ -46,11 +46,11 @@
         android:id="@+id/ograra"
         android:layout_width="113dp"
         android:layout_height="73dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="152dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/ic_ogr_arama"
         android:onClick="shareGit"
-        android:shadowColor="@color/green"
+        android:shadowColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sharebtn"
         tools:ignore="MissingConstraints" />
@@ -150,13 +150,13 @@
         android:id="@+id/uploadbtn"
         android:layout_width="113dp"
         android:layout_height="73dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/ic_add"
         android:onClick="uploadaGit"
         android:shadowColor="@color/green"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/takiplbtn"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="70dp" />
+        tools:layout_editor_absoluteX="66dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -201,16 +201,15 @@
         android:id="@+id/sharebtn"
         android:layout_width="113dp"
         android:layout_height="73dp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/ic_profile"
         android:onClick="profileGit"
         android:shadowColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintHorizontal_bias="0.631"
         app:layout_constraintStart_toEndOf="@+id/uploadbtn"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:layout_constraintVertical_bias="0.066"
+        app:layout_constraintTop_toBottomOf="@+id/eklebtn"
+        app:layout_constraintVertical_bias="0.221"
         tools:ignore="MissingConstraints" />
 
     <TextView
