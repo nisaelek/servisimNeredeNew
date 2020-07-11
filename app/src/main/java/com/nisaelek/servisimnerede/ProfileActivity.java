@@ -282,7 +282,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(ProfileActivity.this, "Yuppi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Başarılı şekilde Profil guncellendi", Toast.LENGTH_SHORT).show();
                 progresBarCircle.setVisibility(View.GONE);
             }
         });

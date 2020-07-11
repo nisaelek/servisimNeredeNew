@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.nisaelek.AramaActivity;
 
 import java.util.List;
 
@@ -50,6 +51,10 @@ public class AnaActivity extends AppCompatActivity {
     }
     public void shareGit(View view) {
         Intent intent = new Intent(AnaActivity.this, ShareActivity.class);
+        startActivity(intent);
+    }
+    public void aramaGit(View view) {
+        Intent intent = new Intent(AnaActivity.this, AramaActivity.class);
         startActivity(intent);
     }
 
