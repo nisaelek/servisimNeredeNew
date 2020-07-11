@@ -12,9 +12,9 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/green"
+            android:layout_width="380dp"
+            android:layout_height="690dp"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="6dp"
             app:cardMaxElevation="6dp"
             app:contentPadding="16dp">
@@ -39,8 +39,6 @@
                 </RelativeLayout>
 
 
-
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilKullaniciAdi"
                     android:layout_width="match_parent"
@@ -55,7 +53,6 @@
                         android:inputType="textPersonName" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
 
 
                 <Button
