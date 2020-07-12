@@ -46,18 +46,26 @@ public class AnaActivity extends AppCompatActivity {
     public void uploadaGit(View view) {
         Intent intent = new Intent(AnaActivity.this, UploadActivity.class);
         startActivity(intent);
+        finish();
     }
     public void shareGit(View view) {
         Intent intent = new Intent(AnaActivity.this, ShareActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void aramaGit(View view) {
         Intent intent = new Intent(AnaActivity.this, AramaActivity.class);
         startActivity(intent);
+        finish();
     }
     public void dilekGit(View view) {
         Intent intent = new Intent(AnaActivity.this, DilekActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    public void chatbtn(View view) {
+        Intent intent = new Intent(AnaActivity.this, MesajActivity.class);
         startActivity(intent);
     }
 /*
